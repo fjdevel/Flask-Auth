@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    networks:
+      - mynetwork
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'pdm'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'admin'
+      MYSQL_ROOT_PASSWORD: 'admin'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build: .
+    networks:
+      - mynetwork
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db
+  
+  nginx:
+    image: nginx:latest
+    networks:
+      - mynetwork
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  db_data: {}
+
+networks:
+  mynetwork:

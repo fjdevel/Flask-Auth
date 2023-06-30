@@ -61,4 +61,4 @@ if __name__ == '__main__':
 
     # Run app. For production use another web server.
     # Set debug and use_reloader parameters as False.
-    app.run(port=5000, debug=True, host='localhost', use_reloader=True)
+    app.run(host='0.0.0.0', port=5000)
